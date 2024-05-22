@@ -12,4 +12,8 @@ A website that allows users to search the Spotify library, create a custom playl
 - Users can see information about each song like title, artist, and album for songs they queried
 - Users can export their custom playlist to their personal Spotify account
 
+## Build with
+
+This Project is build with React and Vite. 
+
 [^1]: Based on a Codecademy tutorial
