@@ -1,8 +1,15 @@
-# React + Vite
+# Jammming[^1]
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+First React project.
+A website that allows users to search the Spotify library, create a custom playlist, then save it to their Spotify account.
 
-Currently, two official plugins are available:
+> [!NOTE]
+> Work in progress
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Future features:
+
+- Users can search for songs by song title.
+- Users can see information about each song like title, artist, and album for songs they queried
+- Users can export their custom playlist to their personal Spotify account
+
+[^1]: Based on a Codecademy tutorial
