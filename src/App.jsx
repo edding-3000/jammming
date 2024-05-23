@@ -1,36 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react';
+
+import { TrackList } from './components/TrackList/TrackList';
+import { Track } from './components/Track/Track';
 import './App.css'
+import mockData from './mockData/mockData';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [inputVal, setInputVal] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+
+  const handleChange = (event) => {
+    setInputVal(() => event.target.value);
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (inputVal.length > 0) {
+      // Get search results 
+      const searchResult = mockData.filter((data) => {
+        return Object.keys(data).some(function (key) {
+          if (key != "id") return data[key].includes(inputVal);
+        });
+      });
+      setSearchResults(searchResult);
+      setSearchQuery(inputVal);
+      setInputVal("");
+    }
+  }
+
+  useEffect(() => {
+    // const searchResult = mockData.filter((data) => {
+    //   return Object.keys(data).some(function (key) {
+    //     if (key != "id") return data[key].includes(searchQuery);
+    //   });
+    // });
+    // console.log(searchResult);
+    // setSearchResults(searchResult);
+    console.log(searchResults);
+  }, [searchResults]);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-        <p>
-          Hoffentlich wird das gut :l
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>Jammming</h1>
+      <form onSubmit={handleSubmit}>
+        <input type='text' placeholder='Search songs' name='searchSongs' id='searchSongs' value={inputVal} onChange={handleChange} />
+        <button type='submit'>Search</button>
+      </form>
+
+      {/* Display list of results */}
+      <TrackList searchQuery={searchQuery} searchResults={searchResults}>
+        {/* Display each track that is matching users search query */}
+        <ul>
+          {searchResults.map((searchResult, index) => (
+            <Track key={index} searchResult={searchResult} />
+          ))}
+        </ul>
+      </TrackList>
     </>
   )
 }
