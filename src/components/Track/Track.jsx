@@ -1,13 +1,18 @@
 import React from 'react';
 
-export function Track({
-    searchResult
+function Track({
+    trackButtonEvent,
+    trackInfos,
+    button,
+    isDisabled
 }) {
     return (
-        <li>
-            <p>{`${searchResult.name} - ${searchResult.artist}`}</p>
-            <p>{searchResult.album}</p>
-            <button>Add</button>
+        <li >
+            <p>{`${trackInfos.name} - ${trackInfos.artist}`}</p>
+            <p>{trackInfos.album}</p>
+            <button onClick={trackButtonEvent} data-id={trackInfos.id} disabled={isDisabled}>{button}</button>
         </li>
     );
 }
+
+export default Track;
