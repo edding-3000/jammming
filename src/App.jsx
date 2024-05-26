@@ -4,12 +4,16 @@ import Playlist from './components/Playlist/Playlist';
 import TrackList from './components/TrackList/TrackList';
 import './App.css'
 import mockData from './mockData/mockData';
+import requestAccessToken from './spotifyAuthorization/requestAccessToken';
+import { currentToken, extractAccessToken, getUserData } from './spotifyAuthorization/extractAccessToken';
 
 function App() {
   const [inputVal, setInputVal] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [playlistTracks, setPlaylistTracks] = useState([]);
+  const [userData, setUserData] = useState({});
+  const [loginError, setLoginError] = useState("");
 
   const handleChange = (event) => {
     setInputVal(() => event.target.value);
@@ -58,6 +62,48 @@ function App() {
     }
   }
 
+  const connectToSpotify = async () => {
+    await requestAccessToken();
+  }
+
+  useEffect(() => {
+    const fetch = async () => {
+      let access_token = null;
+      if (!currentToken.access_token) access_token = await extractAccessToken();
+      else access_token = currentToken.access_token;
+      await getUserData(access_token).then(
+        (data) => {
+          setLoginError("");
+          if (data) {
+            setUserData(data);
+            console.log(data);
+          }
+        }
+      ).catch((error) => {
+        console.log(error);
+        setLoginError(error);
+        setUserData({});
+      })
+    }
+
+    if (window.location.hash.includes('access_token') || (Object.keys(userData).length === 0 && currentToken.access_token)) {
+      fetch();
+    }
+
+    if (currentToken.timeLeft.isTimeLeft) {
+      let handleExpiration = setTimeout(() => { handleLogout() }, currentToken.timeLeft.time)
+      return () => { clearTimeout(handleExpiration) };
+    };
+    console.log(currentToken.timeLeft.time);
+  }, []);
+
+  function handleLogout() {
+    console.log("Bei Spotify abgemeldet");
+    localStorage.clear();
+    setUserData({});
+    window.location.href = "http://localhost:5173";
+  }
+
   useEffect(() => {
     console.log(playlistTracks);
   }, [playlistTracks]);
@@ -69,6 +115,10 @@ function App() {
   return (
     <>
       <h1>Jammming</h1>
+      {Object.keys(userData).length === 0 ? "" : <p>Hallo {userData.display_name}</p>}
+      <button onClick={connectToSpotify} className={Object.keys(userData).length === 0 ? "show" : "hide"}>Mit Spotify verbinden</button>
+      <button onClick={handleLogout} className={Object.keys(userData).length === 0 ? "hide" : "show"}>Logout</button>
+      <p>{loginError}</p>
       <form onSubmit={handleSubmit}>
         <input type='text' placeholder='Search songs' name='searchSongs' id='searchSongs' value={inputVal} onChange={handleChange} />
         <button type='submit'>Search</button>

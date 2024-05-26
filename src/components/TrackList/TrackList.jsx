@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Track from '../Track/Track';
 
 function TrackList({ searchQuery, searchResults, playlistTracks, onTrackButtonClick }) {
-    const [isDisabled, setIsDisabled] = useState(false);
 
     return (
         <div>
