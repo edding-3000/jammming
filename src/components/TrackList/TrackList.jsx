@@ -13,7 +13,7 @@ function TrackList({ searchQuery, searchResults, playlistTracks, onTrackButtonCl
                         key={index}
                         trackInfos={searchResult}
                         isDisabled={playlistTracks.some((playlistTrack) => playlistTrack.id === searchResult.id)}
-                        button="Add"
+                        button="+"
                     />
                 ))}
             </ul>

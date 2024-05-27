@@ -61,7 +61,7 @@ function Playlist({ playlistTracks, onTrackButtonClick }) {
             <input type='text' placeholder='Playlistname' name='playlistInput' id='playlistInput' value={playlistName} onChange={handleChange} />
             <ul>
                 {playlistTracks.map((playlistTrack, index) => (
-                    <Track trackButtonEvent={onTrackButtonClick} key={index} trackInfos={playlistTrack} button="Remove" />
+                    <Track trackButtonEvent={onTrackButtonClick} key={index} trackInfos={playlistTrack} button="-" />
                 ))}
             </ul>
             <button onClick={addToSpotify}>Add to Spotify</button>
