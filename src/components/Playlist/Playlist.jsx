@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Track from '../Track/Track';
 
+import { userData, getUsersPlaylists, addPlaylist, addTracksToPlaylist } from '../../spotify/addPlaylist';
+
 function Playlist({ playlistTracks, onTrackButtonClick }) {
     const [playlistName, setPlaylistName] = useState("");
     const [playlistUris, setPlaylistUris] = useState([]);
@@ -22,8 +24,29 @@ function Playlist({ playlistTracks, onTrackButtonClick }) {
     }
 
     // Handle "Add to Spotify click"
-    const addToSpotify = () => {
+    const addToSpotify = async () => {
         console.log(playlistUris);
+        if (playlistUris.length <= 0) {
+            console.log("Keine tracks in der Playlist.");
+            return;
+        }
+
+        if (!localStorage.getItem('access_token')) {
+            console.log("Keine access_token.");
+            return;
+        }
+
+        try {
+            const userID = await userData("userID");
+            let playlistID = await getUsersPlaylists(playlistName, userID);
+            if (playlistID.length === 0) {
+                playlistID = await addPlaylist(playlistName, userID);
+            } else playlistID = playlistID[0].id;
+            await addTracksToPlaylist(playlistUris, playlistID);
+            console.log('Playlist erfolgreich erstellt und Tracks hinzugefügt');
+        } catch (error) {
+            console.error('Fehler beim Erstellen der Playlist oder Hinzufügen der Tracks:', error);
+        }
     }
 
     return (

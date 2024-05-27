@@ -8,9 +8,10 @@ function Track({
 }) {
     return (
         <li >
-            <p>{`${trackInfos.name} - ${trackInfos.artist}`}</p>
-            <p>{trackInfos.album}</p>
-            <button onClick={trackButtonEvent} data-id={trackInfos.id} disabled={isDisabled}>{button}</button>
+            <img src={trackInfos.image} alt={`Cover ${trackInfos.name} - ${trackInfos.artists}`} />
+            <p>{`${trackInfos.name} - ${trackInfos.artists}`}</p>
+            <p>{trackInfos.album}</p><p>{trackInfos.duration}</p>
+            <button onClick={trackButtonEvent} data-id={trackInfos.id} data-uri={trackInfos.uri} disabled={isDisabled}>{button}</button>
         </li>
     );
 }

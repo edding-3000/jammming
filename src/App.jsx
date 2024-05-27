@@ -1,11 +1,23 @@
+/**
+ * First React project
+*/
+
 import { useState, useEffect } from 'react';
 
+// Components
 import Playlist from './components/Playlist/Playlist';
 import TrackList from './components/TrackList/TrackList';
+import { SearchBar } from './components/SearchBar/SearchBar';
 import './App.css'
 import mockData from './mockData/mockData';
-import requestAccessToken from './spotifyAuthorization/requestAccessToken';
-import { currentToken, extractAccessToken, getUserData } from './spotifyAuthorization/extractAccessToken';
+
+// Spotify files
+import requestAccessToken from './spotify/spotifyAuthorization/requestAccessToken';
+import { currentToken, extractAccessToken, getUserData } from './spotify/spotifyAuthorization/extractAccessToken';
+import { spotifySearchRequest } from './spotify/spotifySearchRequest';
+
+// Helper
+import { millisToMinutesAndSeconds } from './helper/helper';
 
 function App() {
   const [inputVal, setInputVal] = useState("");
@@ -14,20 +26,33 @@ function App() {
   const [playlistTracks, setPlaylistTracks] = useState([]);
   const [userData, setUserData] = useState({});
   const [loginError, setLoginError] = useState("");
+  const [loginCountdown, setLoginCountdown] = useState("");
+  const [logout, setLogout] = useState("");
 
   const handleChange = (event) => {
     setInputVal(() => event.target.value);
   }
 
-  const handleSubmit = (event) => {
+  // Search for track
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (inputVal.length > 0) {
       // Get search results 
-      const searchResult = mockData.filter((data) => {
-        return Object.keys(data).some(function (key) {
-          if (key != "id") return data[key].includes(inputVal);
+      let result = await spotifySearchRequest(inputVal);
+      let searchResult = [];
+
+      for (const item of result) {
+        searchResult.push({
+          "album": item.album.name,
+          "release_date": item.album.release_date,
+          "image": item.album.images[1].url,
+          "artists": item.artists.map((artist) => artist.name).join(", "),
+          "name": item.name,
+          "duration": millisToMinutesAndSeconds(item.duration_ms),
+          "uri": item.uri,
+          "id": item.id
         });
-      });
+      };
       setSearchResults(searchResult);
       setSearchQuery(inputVal);
       setInputVal("");
@@ -51,6 +76,7 @@ function App() {
     }
   }
 
+  // Add track to Playlist
   const handleTrackButtonClick = ({ target }) => {
     const trackId = target.getAttribute("data-id");
     const action = target.innerText;
@@ -62,6 +88,7 @@ function App() {
     }
   }
 
+  // Connect to Spotify via Implicit Grant Flow (Not recomended because of security flaws)
   const connectToSpotify = async () => {
     await requestAccessToken();
   }
@@ -91,16 +118,28 @@ function App() {
     }
 
     if (currentToken.timeLeft.isTimeLeft) {
-      let handleExpiration = setTimeout(() => { handleLogout() }, currentToken.timeLeft.time)
-      return () => { clearTimeout(handleExpiration) };
+      // Display timer for token expiry
+      const intervalId = setInterval(() => {
+        setLoginCountdown(millisToMinutesAndSeconds(currentToken.timeLeft.time));
+      }, 1000);
+
+      // Handle Logout after Token expires
+      const handleExpiration = setTimeout(() => { handleLogout() }, currentToken.timeLeft.time)
+
+      return () => {
+        clearTimeout(handleExpiration);
+        clearInterval(intervalId);
+      };
     };
-    console.log(currentToken.timeLeft.time);
+
+    setLogout("");
   }, []);
 
   function handleLogout() {
     console.log("Bei Spotify abgemeldet");
     localStorage.clear();
     setUserData({});
+    setLogout("Du wurdest abgemeldet.");
     window.location.href = "http://localhost:5173";
   }
 
@@ -115,19 +154,19 @@ function App() {
   return (
     <>
       <h1>Jammming</h1>
-      {Object.keys(userData).length === 0 ? "" : <p>Hallo {userData.display_name}</p>}
-      <button onClick={connectToSpotify} className={Object.keys(userData).length === 0 ? "show" : "hide"}>Mit Spotify verbinden</button>
-      <button onClick={handleLogout} className={Object.keys(userData).length === 0 ? "hide" : "show"}>Logout</button>
       <p>{loginError}</p>
-      <form onSubmit={handleSubmit}>
-        <input type='text' placeholder='Search songs' name='searchSongs' id='searchSongs' value={inputVal} onChange={handleChange} />
-        <button type='submit'>Search</button>
-      </form>
+      <p>{logout}</p>
+      <button onClick={connectToSpotify} className={Object.keys(userData).length === 0 ? "show" : "hide"}>Mit Spotify verbinden</button>
 
-      {/* Display list of results */}
-      <TrackList searchQuery={searchQuery} searchResults={searchResults} playlistTracks={playlistTracks} onTrackButtonClick={handleTrackButtonClick} />
-      {/* Display playlist */}
-      <Playlist playlistTracks={playlistTracks} onTrackButtonClick={handleTrackButtonClick} />
+      <div className={Object.keys(userData).length === 0 ? "hide" : "show"}>
+        <p>Hallo {userData.display_name}</p><p>{loginCountdown}</p>
+        <button onClick={handleLogout}>Logout</button>
+        <SearchBar handleSubmit={handleSubmit} inputVal={inputVal} handleChange={handleChange} />
+
+        <TrackList searchQuery={searchQuery} searchResults={searchResults} playlistTracks={playlistTracks} onTrackButtonClick={handleTrackButtonClick} />
+
+        <Playlist playlistTracks={playlistTracks} onTrackButtonClick={handleTrackButtonClick} />
+      </div>
     </>
   )
 }
