@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Track from '../Track/Track';
 
-import { userData, getUsersPlaylists, addPlaylist, addTracksToPlaylist } from '../../spotify/addPlaylist';
+import { userData, getUsersPlaylists, addPlaylist, tracksAlreadyInPlaylist, addTracksToPlaylist } from '../../spotify/addPlaylist';
 
 function Playlist({ playlistTracks, onTrackButtonClick }) {
     const [playlistName, setPlaylistName] = useState("");
@@ -39,11 +39,18 @@ function Playlist({ playlistTracks, onTrackButtonClick }) {
         try {
             const userID = await userData("userID");
             let playlistID = await getUsersPlaylists(playlistName, userID);
+            let tracks = playlistUris;
             if (playlistID.length === 0) {
+                // If no playlist with same name was found, create new playlist
                 playlistID = await addPlaylist(playlistName, userID);
-            } else playlistID = playlistID[0].id;
-            await addTracksToPlaylist(playlistUris, playlistID);
+            } else {
+                // Otherwise check if tracks are already in existing playlist
+                playlistID = playlistID[0].id;
+                tracks = await tracksAlreadyInPlaylist(playlistUris, playlistID);
+            }
+            await addTracksToPlaylist(tracks, playlistID);
             console.log('Playlist erfolgreich erstellt und Tracks hinzugefügt');
+            setPlaylistUris([]);
         } catch (error) {
             console.error('Fehler beim Erstellen der Playlist oder Hinzufügen der Tracks:', error);
         }

@@ -6,7 +6,10 @@ A website that allows users to search the Spotify library, create a custom playl
 > [!NOTE]
 > Work in progress
 
-## Future features:
+>[!WARNING]
+> This project uses Spotifys "Implicit Grant Flow". The implicit grant flow has some significant security flaws, so Spotify strongly advise against using this flow. If you need to implement authorization where storing your client secret is not possible, use Authorization code with PKCE instead.
+
+## Features:
 
 - Users can search for songs by song title.
 - Users can see information about each song like title, artist, and album for songs they queried
@@ -14,6 +17,6 @@ A website that allows users to search the Spotify library, create a custom playl
 
 ## Build with
 
-This Project is build with React and Vite. 
+This Project is build with React and Vite. It uses the Spotify "Implicit Grant Flow" api. 
 
 [^1]: Based on a Codecademy tutorial

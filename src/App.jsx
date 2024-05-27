@@ -9,7 +9,6 @@ import Playlist from './components/Playlist/Playlist';
 import TrackList from './components/TrackList/TrackList';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import './App.css'
-import mockData from './mockData/mockData';
 
 // Spotify files
 import requestAccessToken from './spotify/spotifyAuthorization/requestAccessToken';
@@ -131,8 +130,6 @@ function App() {
         clearInterval(intervalId);
       };
     };
-
-    setLogout("");
   }, []);
 
   function handleLogout() {

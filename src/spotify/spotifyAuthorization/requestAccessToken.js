@@ -14,7 +14,7 @@ export const generateRandomString = (length) => {
 
 // Authorization request
 const requestAccessToken = async () => {
-    const client_id = 'a99907a618d7462db34f0730ae960081';
+    const client_id = import.meta.env.VITE_client_id;
     const redirect_uri = 'http://localhost:5173';
 
     const stateKey = 'spotify_auth_state';
