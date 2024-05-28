@@ -26,7 +26,8 @@ function App() {
   const [userData, setUserData] = useState({});
   const [loginError, setLoginError] = useState("");
   const [loginCountdown, setLoginCountdown] = useState("");
-  const [logout, setLogout] = useState("");
+  const [login, setLogin] = useState(false);
+  const [connectClicked, setConnectClicked] = useState(false)
 
   const handleChange = (event) => {
     setInputVal(() => event.target.value);
@@ -89,7 +90,8 @@ function App() {
 
   // Connect to Spotify via Implicit Grant Flow (Not recomended because of security flaws)
   const connectToSpotify = async () => {
-    await requestAccessToken();
+    setConnectClicked(true);
+    // await requestAccessToken();
   }
 
   useEffect(() => {
@@ -102,6 +104,7 @@ function App() {
           setLoginError("");
           if (data) {
             setUserData(data);
+            setLogin(true);
             console.log(data);
           }
         }
@@ -109,10 +112,11 @@ function App() {
         console.log(error);
         setLoginError(error);
         setUserData({});
+        setLogin(false)
       })
     }
 
-    if (window.location.hash.includes('access_token') || (Object.keys(userData).length === 0 && currentToken.access_token)) {
+    if (window.location.hash.includes('access_token') || (!login && currentToken.access_token)) {
       fetch();
     }
 
@@ -130,13 +134,15 @@ function App() {
         clearInterval(intervalId);
       };
     };
+    setConnectClicked(false);
   }, []);
 
   function handleLogout() {
     console.log("Bei Spotify abgemeldet");
     localStorage.clear();
     setUserData({});
-    setLogout("Du wurdest abgemeldet.");
+    setLogin(false);
+    setConnectClicked(false);
     window.location.href = "http://localhost:5173";
   }
 
@@ -150,20 +156,35 @@ function App() {
 
   return (
     <>
-      <h1>Jammming</h1>
-      <p>{loginError}</p>
-      <p>{logout}</p>
-      <button onClick={connectToSpotify} className={Object.keys(userData).length === 0 ? "show" : "hide"}>Mit Spotify verbinden</button>
+      {!login ? (
+        <>
+          <header>
+            <nav>
+              <h1>Jammming</h1>
+            </nav>
+            <h2>Music your way – Create your Spotify playlists online! 🎧</h2>
+            <p className='intro'>Jammmin is a website that allows users to search the Spotify library, create a custom playlist and then save it to their Spotify account.</p>
+            <p className={`message error ${loginError ? "show" : "hide"}`}>{loginError}</p>
+          </header >
+          <main className='mainButtonWrap'>
+            <button onClick={connectToSpotify} className={`mainButton${connectClicked ? " fullBlue" : ""}`}>Connect to Spotify →</button>
+          </main>
+        </>
+      ) : (
+        <>
+          <header>
+            <nav>
+              <p>Hallo {userData.display_name}</p><p>{loginCountdown}</p>
+              <button onClick={handleLogout}>Logout</button>
+            </nav>
+            <SearchBar handleSubmit={handleSubmit} inputVal={inputVal} handleChange={handleChange} />
+          </header>
 
-      <div className={Object.keys(userData).length === 0 ? "hide" : "show"}>
-        <p>Hallo {userData.display_name}</p><p>{loginCountdown}</p>
-        <button onClick={handleLogout}>Logout</button>
-        <SearchBar handleSubmit={handleSubmit} inputVal={inputVal} handleChange={handleChange} />
+          <TrackList searchQuery={searchQuery} searchResults={searchResults} playlistTracks={playlistTracks} onTrackButtonClick={handleTrackButtonClick} />
 
-        <TrackList searchQuery={searchQuery} searchResults={searchResults} playlistTracks={playlistTracks} onTrackButtonClick={handleTrackButtonClick} />
-
-        <Playlist playlistTracks={playlistTracks} onTrackButtonClick={handleTrackButtonClick} />
-      </div>
+          <Playlist playlistTracks={playlistTracks} onTrackButtonClick={handleTrackButtonClick} />
+        </>)
+      }
     </>
   )
 }
