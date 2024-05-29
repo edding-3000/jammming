@@ -1,3 +1,12 @@
+#searchSongsForm {
+    margin-top: 150px;
+    border-radius: var(--buttonRadius);
+
+    /* -webkit-box-shadow: 0px 0px 70px 0px rgba(46, 87, 254, 1);
+    -moz-box-shadow: 0px 0px 70px 0px rgba(46, 87, 254, 1);
+    box-shadow: 0px 0px 70px 0px rgba(46, 87, 254, 1); */
+}
+
 #searchSongsForm input {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -11,7 +20,6 @@
 
 form#searchSongsForm:focus-within {
     outline: auto;
-    border-radius: var(--buttonRadius);
 }
 
 form#searchSongsForm div {

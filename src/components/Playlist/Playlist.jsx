@@ -24,7 +24,8 @@ function Playlist({ playlistTracks, onTrackButtonClick }) {
     }
 
     // Handle "Add to Spotify click"
-    const addToSpotify = async () => {
+    const addToSpotify = async (event) => {
+        event.preventDefault();
         console.log(playlistUris);
         if (playlistUris.length <= 0) {
             console.log("Keine tracks in der Playlist.");
@@ -58,7 +59,10 @@ function Playlist({ playlistTracks, onTrackButtonClick }) {
 
     return (
         <>
-            <input className='button' type='text' placeholder='Playlistname' name='playlistInput' id='playlistInput' value={playlistName} onChange={handleChange} />
+            <form onSubmit={addToSpotify}>
+                <input className='button' type='text' placeholder='Playlistname' name='playlistInput' id='playlistInput' value={playlistName} onChange={handleChange} />
+                <button type='submit'>Add to Spotify</button>
+            </form>
             <ul>
                 {playlistTracks.map((playlistTrack, index) => (
                     <Track
@@ -70,7 +74,6 @@ function Playlist({ playlistTracks, onTrackButtonClick }) {
                     />
                 ))}
             </ul>
-            <button onClick={addToSpotify}>Add to Spotify</button>
         </>
     )
 }

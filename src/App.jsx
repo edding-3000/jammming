@@ -49,6 +49,7 @@ function App() {
           "image": item.album.images[1].url,
           "artists": item.artists.map((artist) => artist.name).join(", "),
           "name": item.name,
+          "preview_url": item.preview_url,
           "duration": millisToMinutesAndSeconds(item.duration_ms),
           "uri": item.uri,
           "id": item.id

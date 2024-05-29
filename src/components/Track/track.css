@@ -1,0 +1,86 @@
+ul {
+    list-style-type: none;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-inline-start: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+ul li {
+    position: relative;
+    max-width: 100%;
+    text-align: left;
+    padding: 12px;
+    border-radius: calc(var(--buttonRadius) - 5px);
+    /* transition: background-color .25s; */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+ul li:hover {
+    background-color: var(--grey);
+}
+
+ul li img {
+    border-radius: calc(var(--buttonRadius) - 15px);
+    width: 90px;
+    height: 90px;
+}
+
+ul li span {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+ul li span p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+
+}
+
+ul li button {
+    margin-left: auto;
+}
+
+/* ul li button.hi::before {
+    content: "";
+    position: absolute;
+    width: 2%;
+    height: 20%;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    right: 15px;
+    background-color: var(--blue);
+    pointer-events: none;
+    z-index: -1;
+    border-radius: var(--buttonRadius);
+    transition-duration: 0.25s;
+    transition-property: top, right, width, height, border-radius;
+} */
+
+/* ul li button.lol::before {
+    right: 0 !important;
+    top: 50%;
+    width: 100% !important;
+    height: 100% !important;
+    transform: translate(-0%, -50%) !important;
+} */
+
+.greyFontCol {
+    color: var(--ultraLightGrey);
+}
+
+.semiBold {
+    font-weight: 700;
+}
+
+.isAdded {
+    background-color: var(--blue) !important;
+}
