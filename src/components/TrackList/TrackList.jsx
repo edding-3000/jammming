@@ -5,7 +5,7 @@ function TrackList({ searchQuery, searchResults, playlistTracks, onTrackButtonCl
 
     return (
         <div>
-            <h2>{searchResults.length === 0 ? "No r" : "R"}esults{searchQuery.length > 0 ? ` for "${searchQuery}"` : ""}</h2>
+            {`${searchQuery.length > 0 ? (<h2>{searchResults.length === 0 ? "No r" : "R"}esults{searchQuery.length > 0 ? ` for "${searchQuery}"` : ""}</h2>) : ""}`}
             <ul>
                 {searchResults.map((searchResult, index) => (
                     <Track
@@ -13,6 +13,7 @@ function TrackList({ searchQuery, searchResults, playlistTracks, onTrackButtonCl
                         key={index}
                         trackInfos={searchResult}
                         isDisabled={playlistTracks.some((playlistTrack) => playlistTrack.id === searchResult.id)}
+                        buttonType="add"
                         button="+"
                     />
                 ))}

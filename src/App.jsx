@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import Playlist from './components/Playlist/Playlist';
 import TrackList from './components/TrackList/TrackList';
 import { SearchBar } from './components/SearchBar/SearchBar';
+import { Nav } from './components/nav/nav';
 import './App.css'
 
 // Spotify files
@@ -60,6 +61,7 @@ function App() {
   }
 
   function addToPlaylist(trackId) {
+    console.log("hi");
     // Find track by id in searchresults array
     const trackIndex = searchResults.findIndex((searchResult) => searchResult.id === trackId);
 
@@ -79,11 +81,11 @@ function App() {
   // Add track to Playlist
   const handleTrackButtonClick = ({ target }) => {
     const trackId = target.getAttribute("data-id");
-    const action = target.innerText;
-    if (action === "Add") {
+    const action = target.getAttribute("data-type");
+    if (action === "add") {
       addToPlaylist(trackId);
     }
-    if (action === "Remove") {
+    if (action === "remove") {
       setPlaylistTracks((prev) => prev.filter((playlistTrack) => playlistTrack.id !== trackId));
     }
   }
@@ -91,6 +93,7 @@ function App() {
   // Connect to Spotify via Implicit Grant Flow (Not recomended because of security flaws)
   const connectToSpotify = async () => {
     setConnectClicked(true);
+    setTimeout(async () => { await requestAccessToken(); }, 200)
     // await requestAccessToken();
   }
 
@@ -143,7 +146,7 @@ function App() {
     setUserData({});
     setLogin(false);
     setConnectClicked(false);
-    window.location.href = "http://localhost:5173";
+    // window.location.href = "http://localhost:5173";
   }
 
   useEffect(() => {
@@ -159,30 +162,29 @@ function App() {
       {!login ? (
         <>
           <header>
-            <nav>
-              <h1>Jammming</h1>
-            </nav>
-            <h2>Music your way – Create your Spotify playlists online! 🎧</h2>
-            <p className='intro'>Jammmin is a website that allows users to search the Spotify library, create a custom playlist and then save it to their Spotify account.</p>
-            <p className={`message error ${loginError ? "show" : "hide"}`}>{loginError}</p>
+            <Nav login={login} />
+            <div className='hero'>
+              <h2>Music your way – <br />Create your Spotify playlists online! 🎧</h2>
+              <p className='intro'>After logging in, your session is valid for one hour. Afterwards you can log in again!</p>
+              {`${loginError ? <p className="message error show">{loginError}</p> : ""}`}
+            </div>
           </header >
-          <main className='mainButtonWrap'>
-            <button onClick={connectToSpotify} className={`mainButton${connectClicked ? " fullBlue" : ""}`}>Connect to Spotify →</button>
-          </main>
+          <div className='mainButtonWrap'>
+            <button onClick={connectToSpotify} className={`mainButton connectButton${connectClicked ? " fullBlue" : ""}`}>Connect to Spotify →</button>
+          </div>
+          <p className='intro'>Jammmin is a website that allows users to search the Spotify library, create a custom playlist and then save it to their Spotify account.</p>
         </>
       ) : (
         <>
-          <header>
-            <nav>
-              <p>Hallo {userData.display_name}</p><p>{loginCountdown}</p>
-              <button onClick={handleLogout}>Logout</button>
-            </nav>
-            <SearchBar handleSubmit={handleSubmit} inputVal={inputVal} handleChange={handleChange} />
+          <header className="logedIn">
+            <Nav login={login} userData={userData} loginCountdown={loginCountdown} handleLogout={handleLogout} />
+            <SearchBar className='hero' handleSubmit={handleSubmit} inputVal={inputVal} handleChange={handleChange} />
           </header>
+          <main>
+            <TrackList searchQuery={searchQuery} searchResults={searchResults} playlistTracks={playlistTracks} onTrackButtonClick={handleTrackButtonClick} />
 
-          <TrackList searchQuery={searchQuery} searchResults={searchResults} playlistTracks={playlistTracks} onTrackButtonClick={handleTrackButtonClick} />
-
-          <Playlist playlistTracks={playlistTracks} onTrackButtonClick={handleTrackButtonClick} />
+            <Playlist playlistTracks={playlistTracks} onTrackButtonClick={handleTrackButtonClick} />
+          </main>
         </>)
       }
     </>

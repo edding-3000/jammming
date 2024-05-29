@@ -1,51 +1,57 @@
 #root {
+  --heroMarginTop: -140px;
   margin: 0 auto;
   text-align: center;
   min-height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
+}
+
+input {
+  cursor: text !important;
 }
 
 header {
+  pointer-events: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 2em;
+  margin: 0 1em;
   z-index: 2;
+  height: 100svh;
+  justify-content: center;
+}
+
+header.logedIn {
+  --space: 10vh;
+  height: auto;
+  pointer-events: all;
+  gap: var(--space);
+  margin-bottom: var(--space);
+}
+
+.hero {
+  margin-top: var(--heroMarginTop);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+}
+
+.hero h2 {
+  font-size: 5vw;
+  font-size: max(3em, 5vw);
+  line-height: 1.1;
+  pointer-events: all;
 }
 
 .intro {
-  max-width: 750px;
+  margin: 1em auto;
   color: var(--lightGrey);
-}
-
-.hide {
-  display: none;
-  visibility: hidden;
-}
-
-.show {
-  display: inline-block;
-  visibility: visible;
-}
-
-.message {
-  padding: 0.6em 1.2em;
-  border: var(--borderWidth) solid;
-  border-radius: var(--buttonRadius);
-}
-
-.message.error {
-  background-color: var(--errorBg);
-  border-color: var(--errorBorder);
-  font-weight: 500;
-  display: inline-block;
-}
-
-.message.success {
-  background-color: var(--successBg);
-  border-color: var(--successBorder);
+  pointer-events: all;
 }
 
 .mainButtonWrap {
@@ -56,12 +62,13 @@ header {
 }
 
 .mainButton {
+  --buttonMarginTop: calc(100px - (.5* var(--heroMarginTop)));
   border-color: var(--blue);
   border-width: 0;
   background-color: var(--blue);
   transition: all 0.25s linear;
   /* transform-origin: center; */
-  top: calc(50% + 150px);
+  top: calc(50% + var(--buttonMarginTop));
   position: relative;
 }
 
@@ -74,7 +81,7 @@ header {
   background-color: var(--blue);
 }
 
-.mainButton::before {
+.connectButton::before {
   content: "";
   position: absolute;
   width: 100%;
@@ -92,23 +99,29 @@ header {
   transition-property: top, width, height, border-radius;
 }
 
-.mainButton:hover::before {
+.connectButton:hover::before {
   width: 100svw;
   height: 100svh;
-  top: calc(-50svh - 150px);
+  top: calc(-50svh - var(--buttonMarginTop));
   border-radius: 20em;
   /*Desktop besser mit 20em, Mobil mit 15em*/
 }
 
-.mainButton:active::before {
-  transition-duration: 0.1s;
+.connectButton:active::before {
+  transition-duration: 0.2s;
   border-radius: 0;
 }
 
 .fullBlue::before {
-  transition: none;
-  top: calc(-50svh - 150px);
+  top: calc(-50svh - var(--buttonMarginTop));
   width: 100svw;
   height: 100svh;
   border-radius: 0 !important;
+}
+
+@media screen and (max-width: 750px) {
+  .hero h2 {
+    font-size: 3em;
+    line-height: 1.05em;
+  }
 }

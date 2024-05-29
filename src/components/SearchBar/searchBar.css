@@ -1,0 +1,27 @@
+#searchSongsForm input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    padding-right: 5px;
+    max-width: 400px;
+}
+
+#searchSongsForm input:focus {
+    outline: none;
+}
+
+form#searchSongsForm:focus-within {
+    outline: auto;
+    border-radius: var(--buttonRadius);
+}
+
+form#searchSongsForm div {
+    /* border: 2px solid var(--grey); */
+    display: inline-block;
+    background-color: var(--grey);
+    border-top-right-radius: var(--buttonRadius);
+    border-bottom-right-radius: var(--buttonRadius);
+}
+
+form#searchSongsForm div button {
+    border: 2px solid var(--blue);
+}

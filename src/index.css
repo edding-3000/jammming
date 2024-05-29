@@ -45,7 +45,7 @@
 html,
 body {
   width: 100%;
-  overflow: hidden;
+  overflow-X: hidden;
 }
 
 a {
@@ -58,25 +58,34 @@ a:hover {
   color: var(--blueHover);
 }
 
+nav p {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
 }
 
-h1,
 h2 {
   font-family: 'ClashGrotesk-Variable', sans-serif;
   font-weight: 700;
 }
 
 h1 {
-  font-size: 1.5em;
+  font-size: 1.3em;
   line-height: 1;
-  font-weight: 500;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
 }
 
-button {
+button,
+input {
   border-radius: var(--buttonRadius);
   border: var(--borderWidth) solid transparent;
   padding: 0.6em 1.2em;
@@ -105,10 +114,40 @@ button:focus-visible {
   }
 
   a:hover {
-    color: #747bff;
+    color: var(--blue);
   }
 
   button {
     background-color: var(--lightGrey);
   }
 }
+
+.hide {
+  display: none;
+  visibility: hidden;
+}
+
+.show {
+  display: inline-block;
+  visibility: visible;
+}
+
+.message {
+  padding: 0.6em 1.2em;
+  border: var(--borderWidth) solid;
+  border-radius: var(--buttonRadius);
+}
+
+.message.error {
+  background-color: var(--errorBg);
+  border-color: var(--errorBorder);
+  font-weight: 500;
+  display: inline-block;
+}
+
+.message.success {
+  background-color: var(--successBg);
+  border-color: var(--successBorder);
+}
+
+@media screen and (max-width: 750px) {}

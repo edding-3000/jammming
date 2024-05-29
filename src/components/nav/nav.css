@@ -1,0 +1,66 @@
+nav {
+    width: 100%;
+    padding: 1em 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    pointer-events: all;
+}
+
+nav h1 {
+    flex: 1;
+}
+
+nav p {
+    font-size: 1.3em;
+    line-height: 1;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+}
+
+.welcome {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.welcome::before {
+    --cirRadius: 50px;
+    content: attr(data-letter);
+    background-image: var(--profileImg);
+    background-size: cover;
+    background-position: center;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--cirRadius);
+    height: var(--cirRadius);
+    border-radius: calc(var(--cirRadius)/2);
+    background-color: var(--blue);
+}
+
+/* .welcome::after {
+    content: "What songs do you want to experiance today?";
+    font-size: .5em;
+    font-weight: 400;
+    color: var(--lightGrey);
+    letter-spacing: 0.02em;
+} */
+
+nav span {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+@media screen and (max-width: 750px) {
+    nav .welcome+h1 {
+        display: none;
+    }
+}

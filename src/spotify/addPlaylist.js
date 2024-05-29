@@ -7,7 +7,7 @@ import { currentToken } from "./spotifyAuthorization/extractAccessToken";
  * @returns {Promise<(string|object)>}
  * 
  */
-export const userData = async (requestType = "", _access_token = "") => {
+export const usersSpotifyData = async (requestType = "", _access_token = "") => {
     console.log("Looking for Userid.")
     let userID = localStorage.getItem("userID");
 
@@ -69,7 +69,7 @@ export const getUsersPlaylists = async (_playlistName = "", _userID = "", _acces
  * Add a new playlist to Spotify 
  * @returns {Promise<string>}
 */
-export const addPlaylist = async (_playlistName = "", _userID = "", playlistDescription = "New playlist description", playlistPrivacy = false, _access_token) => {
+export const addPlaylistToSpotify = async (_playlistName = "", _userID = "", playlistDescription = "New playlist description", playlistPrivacy = false, _access_token) => {
     console.log(`Creating new playlist: ${_playlistName}.`);
 
     // If userID is not send with functioncall, try to get it from localstorage
@@ -120,6 +120,7 @@ export const tracksAlreadyInPlaylist = async (tracks, _playlistID, _access_token
     const playlistData = await makeGet(endpoint, access_token);
 
     if (playlistData) {
+        // Check if Track from jammmin playlist is already in Spotify playlist
         let uniqueTracks = tracks.filter(track =>
             !playlistData.items.some(item => item.track.uri === track)
         );

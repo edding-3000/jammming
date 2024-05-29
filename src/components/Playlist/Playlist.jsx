@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Track from '../Track/Track';
 
-import { userData, getUsersPlaylists, addPlaylist, tracksAlreadyInPlaylist, addTracksToPlaylist } from '../../spotify/addPlaylist';
+import { usersSpotifyData, getUsersPlaylists, addPlaylistToSpotify, tracksAlreadyInPlaylist, addTracksToPlaylist } from '../../spotify/addPlaylist';
 
 function Playlist({ playlistTracks, onTrackButtonClick }) {
     const [playlistName, setPlaylistName] = useState("");
@@ -37,12 +37,12 @@ function Playlist({ playlistTracks, onTrackButtonClick }) {
         }
 
         try {
-            const userID = await userData("userID");
+            const userID = await usersSpotifyData("userID");
             let playlistID = await getUsersPlaylists(playlistName, userID);
             let tracks = playlistUris;
             if (playlistID.length === 0) {
                 // If no playlist with same name was found, create new playlist
-                playlistID = await addPlaylist(playlistName, userID);
+                playlistID = await addPlaylistToSpotify(playlistName, userID);
             } else {
                 // Otherwise check if tracks are already in existing playlist
                 playlistID = playlistID[0].id;
@@ -58,10 +58,16 @@ function Playlist({ playlistTracks, onTrackButtonClick }) {
 
     return (
         <>
-            <input type='text' placeholder='Playlistname' name='playlistInput' id='playlistInput' value={playlistName} onChange={handleChange} />
+            <input className='button' type='text' placeholder='Playlistname' name='playlistInput' id='playlistInput' value={playlistName} onChange={handleChange} />
             <ul>
                 {playlistTracks.map((playlistTrack, index) => (
-                    <Track trackButtonEvent={onTrackButtonClick} key={index} trackInfos={playlistTrack} button="-" />
+                    <Track
+                        trackButtonEvent={onTrackButtonClick}
+                        key={index}
+                        trackInfos={playlistTrack}
+                        buttonType="remove"
+                        button="-"
+                    />
                 ))}
             </ul>
             <button onClick={addToSpotify}>Add to Spotify</button>
