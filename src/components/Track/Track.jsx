@@ -1,5 +1,7 @@
 import React from 'react';
 import "./track.css";
+import addIcon from '../../assets/icons/add_48dp_FILL0_wght100_GRAD0_opsz48.svg';
+import removeIcon from '../../assets/icons/remove_48dp_FILL0_wght100_GRAD0_opsz48.svg';
 
 function Track({
     trackButtonEvent,
@@ -8,9 +10,13 @@ function Track({
     isDisabled,
     buttonType
 }) {
+    console.log("??");
+
+    const addSvg = <img src={addIcon} alt="Add Icon" />;
+    const removeSvg = <img src={removeIcon} alt="Remove Icon" />;
     let trackButton = isDisabled ?
-        <button className={`hi ${isDisabled ? "lol" : ""}`} onClick={trackButtonEvent} data-id={trackInfos.id} data-type="remove" data-uri={trackInfos.uri}>-</button>
-        : <button className="hi" onClick={trackButtonEvent} data-id={trackInfos.id} data-type={buttonType} data-uri={trackInfos.uri} disabled={isDisabled}>{button}</button>
+        <button onClick={trackButtonEvent} data-id={trackInfos.id} data-type="remove" data-uri={trackInfos.uri}>{removeSvg}</button>
+        : <button onClick={trackButtonEvent} data-id={trackInfos.id} data-type={buttonType} data-uri={trackInfos.uri} disabled={isDisabled}>{buttonType === "add" ? addSvg : removeSvg}</button>
 
     return (
         <li className={isDisabled ? "isAdded" : ""}>

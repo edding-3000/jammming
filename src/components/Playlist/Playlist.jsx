@@ -58,10 +58,10 @@ function Playlist({ playlistTracks, onTrackButtonClick }) {
     }
 
     return (
-        <>
+        <div id="tracklist" className="tracksContainer">
             <form onSubmit={addToSpotify}>
                 <input className='button' type='text' placeholder='Playlistname' name='playlistInput' id='playlistInput' value={playlistName} onChange={handleChange} />
-                <button type='submit'>Add to Spotify</button>
+                <div><button type='submit'>Add to Spotify</button></div>
             </form>
             <ul>
                 {playlistTracks.map((playlistTrack, index) => (
@@ -74,7 +74,7 @@ function Playlist({ playlistTracks, onTrackButtonClick }) {
                     />
                 ))}
             </ul>
-        </>
+        </div>
     )
 }
 export default Playlist;

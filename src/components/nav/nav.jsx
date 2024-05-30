@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { currentToken } from '../../spotify/spotifyAuthorization/extractAccessToken';
+import { millisToMinutesAndSeconds } from '../../helper/helper';
+
 import "./nav.css";
 
-export function Nav({ login, userData, loginCountdown, handleLogout }) {
+export function Nav({ login, userData, handleLogout }) {
+
+    const [loginCountdown, setLoginCountdown] = useState("");
+
+    useEffect(() => {
+        if (currentToken.timeLeft.isTimeLeft) {
+            //Display timer for token expiry
+            const intervalId = setInterval(() => {
+                setLoginCountdown(millisToMinutesAndSeconds(currentToken.timeLeft.time));
+            }, 1000);
+
+            return () => {
+                clearInterval(intervalId);
+            };
+        };
+    }, [login])
 
     const profilePic = login ? // If user is loggedin in Jammmin, render profile pic.
         userData.images.length === 0 // If no image is set in Spotify ...

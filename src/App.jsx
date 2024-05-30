@@ -19,6 +19,9 @@ import { spotifySearchRequest } from './spotify/spotifySearchRequest';
 // Helper
 import { millisToMinutesAndSeconds } from './helper/helper';
 
+// Assets
+import arrowRight from './assets/icons/arrow_forward_48dp_FILL0_wght400_GRAD0_opsz48.svg';
+
 function App() {
   const [inputVal, setInputVal] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -26,7 +29,6 @@ function App() {
   const [playlistTracks, setPlaylistTracks] = useState([]);
   const [userData, setUserData] = useState({});
   const [loginError, setLoginError] = useState("");
-  const [loginCountdown, setLoginCountdown] = useState("");
   const [login, setLogin] = useState(false);
   const [connectClicked, setConnectClicked] = useState(false)
 
@@ -123,23 +125,19 @@ function App() {
     if (window.location.hash.includes('access_token') || (!login && currentToken.access_token)) {
       fetch();
     }
+    setConnectClicked(false);
+  }, []);
 
+  useEffect(() => {
     if (currentToken.timeLeft.isTimeLeft) {
-      // Display timer for token expiry
-      const intervalId = setInterval(() => {
-        setLoginCountdown(millisToMinutesAndSeconds(currentToken.timeLeft.time));
-      }, 1000);
-
       // Handle Logout after Token expires
       const handleExpiration = setTimeout(() => { handleLogout() }, currentToken.timeLeft.time)
 
       return () => {
         clearTimeout(handleExpiration);
-        clearInterval(intervalId);
       };
     };
-    setConnectClicked(false);
-  }, []);
+  }, [login])
 
   function handleLogout() {
     console.log("Bei Spotify abgemeldet");
@@ -171,14 +169,14 @@ function App() {
             </div>
           </header >
           <div className='mainButtonWrap'>
-            <button onClick={connectToSpotify} className={`mainButton connectButton${connectClicked ? " fullBlue" : ""}`}>Connect to Spotify →</button>
+            <button onClick={connectToSpotify} className={`mainButton icon connectButton${connectClicked ? " fullBlue" : ""}`}>Connect to Spotify <img src={arrowRight} /></button>
           </div>
           <p className='intro'>Jammmin is a website that allows users to search the Spotify library, create a custom playlist and then save it to their Spotify account.</p>
         </>
       ) : (
         <>
           <header className="logedIn">
-            <Nav login={login} userData={userData} loginCountdown={loginCountdown} handleLogout={handleLogout} />
+            <Nav login={login} userData={userData} handleLogout={handleLogout} />
             <SearchBar className='hero' handleSubmit={handleSubmit} inputVal={inputVal} handleChange={handleChange} />
           </header>
           <main>

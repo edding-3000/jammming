@@ -76,6 +76,17 @@ header.logedIn {
   position: relative;
 }
 
+.icon {
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  gap: 5px;
+}
+
+.icon img {
+  width: 25px;
+}
+
 .mainButton:hover {
   background-color: var(--blueHover);
   border-color: var(--blue);
