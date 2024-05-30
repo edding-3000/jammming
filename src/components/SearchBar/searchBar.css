@@ -1,5 +1,8 @@
-#searchSongsForm {
+form#searchSongsForm {
     margin-top: 150px;
+}
+
+form {
     border-radius: var(--buttonRadius);
 
     /* -webkit-box-shadow: 0px 0px 70px 0px rgba(46, 87, 254, 1);
@@ -7,22 +10,22 @@
     box-shadow: 0px 0px 70px 0px rgba(46, 87, 254, 1); */
 }
 
-#searchSongsForm input {
+form input {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     padding-right: 5px;
     max-width: 400px;
 }
 
-#searchSongsForm input:focus {
+form input:focus {
     outline: none;
 }
 
-form#searchSongsForm:focus-within {
+form:focus-within {
     outline: auto;
 }
 
-form#searchSongsForm div {
+form div {
     /* border: 2px solid var(--grey); */
     display: inline-block;
     background-color: var(--grey);

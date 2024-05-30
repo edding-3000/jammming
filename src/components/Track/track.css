@@ -46,7 +46,7 @@ ul li span p {
 }
 
 ul li button {
-    margin-left: auto;
+    margin-left: auto !important;
 }
 
 /* ul li button.hi::before {

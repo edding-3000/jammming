@@ -1,0 +1,67 @@
+@media screen and (max-width: 750px) {
+    #playList {
+        --margin: 1em;
+        position: fixed;
+        overflow: hidden;
+        transition: all 0.25s;
+        background-color: rgba(23, 26, 23, 0.98);
+        backdrop-filter: blur(2px);
+        border-radius: var(--buttonRadius);
+        bottom: calc(var(--margin)/2);
+        left: var(--margin);
+        right: var(--margin);
+        max-height: fit-content;
+        z-index: 99;
+        padding: 1em 0 0 0;
+
+        -webkit-box-shadow: 0px 0px 70px 0px rgba(255, 255, 255, 0.1);
+        -moz-box-shadow: 0px 0px 70px 0px rgba(255, 255, 255, 0.1);
+        box-shadow: 0px 0px 70px 0px rgba(255, 255, 255, 0.1);
+    }
+
+    #playList.extend {
+        max-height: calc(100vh - 1em);
+        height: fit-content;
+        flex-direction: column;
+        overflow-x: hidden;
+        overflow-y: scroll !important;
+        background-color: var(--background);
+    }
+
+    #playList ul {
+        scroll-snap-type: x mandatory;
+        width: 100%;
+        overflow-x: scroll;
+        scrollbar-width: none;
+        transition: all 0.25s;
+        /* max-height: 0; */
+        flex-direction: row;
+    }
+
+    #playList.extend ul {
+        flex-direction: column;
+        max-height: 300vh;
+    }
+
+    #playList ul li:hover {
+        background-color: transparent;
+    }
+
+    #playList.extend ul li:hover {
+        background-color: var(--grey);
+    }
+
+    #playList ul li,
+    #playList form {
+        scroll-snap-align: center;
+        min-width: 100%;
+    }
+
+    #playList ul:has(li) {
+        margin-top: 10px;
+    }
+
+    #playList form input {
+        width: 100%;
+    }
+}

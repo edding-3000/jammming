@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './playlist.css';
 import Track from '../Track/Track';
 
 import { usersSpotifyData, getUsersPlaylists, addPlaylistToSpotify, tracksAlreadyInPlaylist, addTracksToPlaylist } from '../../spotify/addPlaylist';
@@ -6,6 +7,7 @@ import { usersSpotifyData, getUsersPlaylists, addPlaylistToSpotify, tracksAlread
 function Playlist({ playlistTracks, onTrackButtonClick }) {
     const [playlistName, setPlaylistName] = useState("");
     const [playlistUris, setPlaylistUris] = useState([]);
+    const [extendPlaylist, setExtendPlaylist] = useState(false);
 
     // Get playlistname from localstorage when app is loaded
     useEffect(() => {
@@ -57,8 +59,17 @@ function Playlist({ playlistTracks, onTrackButtonClick }) {
         }
     }
 
+    const actionExtendPlaylist = ({ target }) => {
+        const el = target.tagName.toLowerCase();
+        if (el === 'ul' || el === 'button' || el === 'input' || el === 'img') { return; }
+
+        let toggleClass;
+        extendPlaylist ? toggleClass = false : toggleClass = true;
+        setExtendPlaylist(toggleClass);
+    }
+
     return (
-        <div id="tracklist" className="tracksContainer">
+        <div id="playList" className={`${extendPlaylist ? "extend " : ""}tracksContainer`} onClick={actionExtendPlaylist}>
             <form onSubmit={addToSpotify}>
                 <input className='button' type='text' placeholder='Playlistname' name='playlistInput' id='playlistInput' value={playlistName} onChange={handleChange} />
                 <div><button type='submit'>Add to Spotify</button></div>

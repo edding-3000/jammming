@@ -82,9 +82,9 @@ function App() {
   }
 
   // Add track to Playlist
-  const handleTrackButtonClick = ({ target }) => {
-    const trackId = target.getAttribute("data-id");
-    const action = target.getAttribute("data-type");
+  const handleTrackButtonClick = ({ currentTarget }) => {
+    const trackId = currentTarget.getAttribute("data-id");
+    const action = currentTarget.getAttribute("data-type");
     if (action === "add") {
       addToPlaylist(trackId);
     }

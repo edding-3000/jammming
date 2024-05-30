@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import './trackList.css';
 import Track from '../Track/Track';
 
 function TrackList({ searchQuery, searchResults, playlistTracks, onTrackButtonClick }) {
@@ -8,7 +9,7 @@ function TrackList({ searchQuery, searchResults, playlistTracks, onTrackButtonCl
         resultsText += `esults for "${searchQuery}"`;
     }
     return (
-        <div id="tracklist" className="tracksContainer">
+        <div id="trackList" className="tracksContainer">
             {searchQuery.length > 0 && (<h2>{resultsText}</h2>)}
             <ul>
                 {searchResults.map((searchResult, index) => (

@@ -10,13 +10,11 @@ function Track({
     isDisabled,
     buttonType
 }) {
-    console.log("??");
-
     const addSvg = <img src={addIcon} alt="Add Icon" />;
     const removeSvg = <img src={removeIcon} alt="Remove Icon" />;
     let trackButton = isDisabled ?
-        <button onClick={trackButtonEvent} data-id={trackInfos.id} data-type="remove" data-uri={trackInfos.uri}>{removeSvg}</button>
-        : <button onClick={trackButtonEvent} data-id={trackInfos.id} data-type={buttonType} data-uri={trackInfos.uri} disabled={isDisabled}>{buttonType === "add" ? addSvg : removeSvg}</button>
+        <button className="icon" onClick={trackButtonEvent} data-id={trackInfos.id} data-type="remove" data-uri={trackInfos.uri}>{removeSvg}</button>
+        : <button className="icon" onClick={trackButtonEvent} data-id={trackInfos.id} data-type={buttonType} data-uri={trackInfos.uri} disabled={isDisabled}>{buttonType === "add" ? addSvg : removeSvg}</button>
 
     return (
         <li className={isDisabled ? "isAdded" : ""}>

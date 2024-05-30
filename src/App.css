@@ -74,17 +74,22 @@ header.logedIn {
   /* transform-origin: center; */
   top: calc(50% + var(--buttonMarginTop));
   position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .icon {
   display: flex;
   align-items: center;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   gap: 5px;
 }
 
 .icon img {
-  width: 25px;
+  --size: 25px;
+  aspect-ratio: 1;
+  width: var(--size);
+  height: auto;
 }
 
 .mainButton:hover {
@@ -134,9 +139,24 @@ header.logedIn {
   border-radius: 0 !important;
 }
 
+main {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+main .tracksContainer {
+  flex: 1;
+}
+
 @media screen and (max-width: 750px) {
   .hero h2 {
     font-size: 3em;
     line-height: 1.05em;
+  }
+
+  main {
+    flex-direction: column;
+    position: relative;
   }
 }
