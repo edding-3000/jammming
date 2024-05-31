@@ -145,11 +145,11 @@ export const tracksAlreadyInPlaylist = async (tracks, _playlistID, _access_token
 export const addTracksToPlaylist = async (tracks, _playlistID, _access_token = "") => {
     console.log(`Tracks will be added.`);
 
-    let playlistID = getPlaylistId(_playlistID);
-
     if (tracks.length === 0) {
         throw new Error("No tracks in playlist.");
     }
+
+    let playlistID = getPlaylistId(_playlistID);
 
     let access_token = getAccessToken(_access_token)
 

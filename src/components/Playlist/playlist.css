@@ -28,6 +28,11 @@
         background-color: var(--background);
     }
 
+    #playList.empty {
+        transition: none;
+        padding: 1em 0;
+    }
+
     #playList ul {
         scroll-snap-type: x mandatory;
         width: 100%;

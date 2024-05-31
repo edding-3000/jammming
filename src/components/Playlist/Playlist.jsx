@@ -68,8 +68,10 @@ function Playlist({ playlistTracks, onTrackButtonClick }) {
         setExtendPlaylist(toggleClass);
     }
 
+    const playlistEmpty = playlistTracks.length === 0 ? "empty" : "";
+
     return (
-        <div id="playList" className={`${extendPlaylist ? "extend " : ""}tracksContainer`} onClick={actionExtendPlaylist}>
+        <div id="playList" className={`${extendPlaylist ? "extend " : ""}tracksContainer ${playlistEmpty}`} onClick={actionExtendPlaylist}>
             <form onSubmit={addToSpotify}>
                 <input className='button' type='text' placeholder='Playlistname' name='playlistInput' id='playlistInput' value={playlistName} onChange={handleChange} />
                 <div><button type='submit'>Add to Spotify</button></div>
