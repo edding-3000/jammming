@@ -42,11 +42,11 @@ export const getUsersPlaylists = async (_playlistName = "", _userID = "", _acces
     console.log(`Searching for existing playlists.`);
 
     // If userID is not send with functioncall, try to get it from localstorage
-    let userID = getUserID(_userID);
+    const userID = getUserID(_userID);
 
-    let access_token = getAccessToken(_access_token);
+    const access_token = getAccessToken(_access_token);
 
-    let playlistName = getPlaylistName(_playlistName);
+    const playlistName = getPlaylistName(_playlistName);
 
     const endpoint = `users/${userID}/playlists`;
 
@@ -54,7 +54,7 @@ export const getUsersPlaylists = async (_playlistName = "", _userID = "", _acces
     const playlists = await makeGet(endpoint, access_token);
 
     if (playlists && playlists.total > 0) {
-        let foundPlaylists = playlists.items.filter((item) => item.name === playlistName);
+        const foundPlaylists = playlists.items.filter((item) => item.name === playlistName);
         console.log(foundPlaylists);
         if (foundPlaylists.length > 0) {
             console.log(`Found Playlist ${foundPlaylists[0].name} with ID ${foundPlaylists[0].id}.`);
@@ -73,12 +73,12 @@ export const addPlaylistToSpotify = async (_playlistName = "", _userID = "", pla
     console.log(`Creating new playlist: ${_playlistName}.`);
 
     // If userID is not send with functioncall, try to get it from localstorage
-    let userID = getUserID(_userID);
+    const userID = getUserID(_userID);
 
     // Check for playlistname
-    let playlistName = getPlaylistName(_playlistName);
+    const playlistName = getPlaylistName(_playlistName);
 
-    let access_token = getAccessToken(_access_token)
+    const access_token = getAccessToken(_access_token)
 
     const body = {
         "name": playlistName,
@@ -106,7 +106,7 @@ export const addPlaylistToSpotify = async (_playlistName = "", _userID = "", pla
 export const tracksAlreadyInPlaylist = async (tracks, _playlistID, _access_token = "") => {
     console.log(`Check whether tracks are already in the playlist.`);
 
-    let playlistID = getPlaylistId(_playlistID);
+    const playlistID = getPlaylistId(_playlistID);
 
     if (tracks.length === 0) {
         throw new Error("No tracks in Jammming playlist.");

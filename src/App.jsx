@@ -64,7 +64,6 @@ function App() {
   }
 
   function addToPlaylist(trackId) {
-    console.log("hi");
     // Find track by id in searchresults array
     const trackIndex = searchResults.findIndex((searchResult) => searchResult.id === trackId);
 
