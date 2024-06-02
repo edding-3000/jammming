@@ -1,5 +1,12 @@
-import { generateRandomString } from "./spotifyAuthorization/requestAccessToken";
-import { getHashParams, clearURL } from "./spotifyAuthorization/extractAccessToken";
+import { getHashParams, clearURL, generateRandomString } from "./spotifyAuthorization/spotifyHelper";
+
+/**
+ * 
+ * https://developer.spotify.com/documentation/web-api/tutorials/implicit-flow
+ * The implicit grant flow has some significant security flaws, so we strongly advise against using this flow. 
+ * If you need to implement authorization where storing your client secret is not possible, use Authorization code with PKCE instead.
+ * 
+ */
 
 const Spotify = {
     _userID: null,

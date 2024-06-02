@@ -13,10 +13,15 @@ export function getHashParams() {
 }
 
 export const clearURL = () => {
-    // Remove code from URL so we can refresh correctly.
     window.history.pushState({}, "", '/');
 
     const url = new URL(window.location.href);
     const updatedUrl = url.search ? url.href : url.href.replace('?', '');
     window.history.replaceState({}, document.title, updatedUrl);
+}
+
+export const generateRandomString = (length) => {
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const values = crypto.getRandomValues(new Uint8Array(length));
+    return values.reduce((acc, x) => acc + possible[x % possible.length], "");
 }

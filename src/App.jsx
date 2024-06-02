@@ -9,7 +9,6 @@ import Playlist from './components/Playlist/Playlist';
 import TrackList from './components/TrackList/TrackList';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import { Nav } from './components/nav/nav';
-import TitleIndex from './components/Playlist/TitleIndex/TitleIndex';
 
 import './App.css'
 

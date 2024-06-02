@@ -46,7 +46,7 @@ function Track({
     }, [isPlaying, currentTrack])
 
     return (
-        <li className={`${isDisabled ? "isAdded " : ""}${scrollClass ? scrollClass : ""}${isPlayingHighlight ? currentTrack === refAudio.current && isPlaying || isPlaying === refAudio.current.getAttribute("src") ? " currentlyPlaing" : "" : ""}`} onClick={handlePlayKlck}> {/*${isPlaying ? isPlaying === trackInfos.preview_url ? " currentlyPlaing" : "" : ""}*/}
+        <li className={`${isDisabled ? "isAdded " : ""}${scrollClass ? scrollClass : ""}${isPlayingHighlight ? currentTrack === refAudio.current && isPlaying || isPlaying === refAudio.current.getAttribute("src") ? " currentlyPlaing" : "" : ""}`} onClick={handlePlayKlck}>
             <picture><img src={trackInfos.image} alt={`Cover ${trackInfos.name} - ${trackInfos.artists}`} /></picture>
             <span>
                 <p className='semiBold'>{`${trackInfos.name} - ${trackInfos.artists}`}</p>
