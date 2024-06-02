@@ -59,6 +59,7 @@ function App() {
           "id": item.id
         });
       };
+      document.title = "Jammmin - " + inputVal;
       setSearchResults(searchResult);
       setSearchQuery(inputVal);
       setInputVal("");
