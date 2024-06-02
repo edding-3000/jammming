@@ -104,6 +104,11 @@ ul li button {
 
 .greyFontCol {
     color: var(--ultraLightGrey);
+    transition: color .25s;
+}
+
+.greyFontCol a:hover {
+    color: var(--color);
 }
 
 .semiBold {

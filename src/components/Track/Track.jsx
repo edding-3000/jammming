@@ -50,7 +50,7 @@ function Track({
             <picture><img src={trackInfos.image} alt={`Cover ${trackInfos.name} - ${trackInfos.artists}`} /></picture>
             <span>
                 <p className='semiBold'>{`${trackInfos.name} - ${trackInfos.artists}`}</p>
-                <p className='greyFontCol'>{trackInfos.album}</p>
+                <p className='greyFontCol'><a className='greyFontCol' href={trackInfos.albumLink} target='_blank' title={`${trackInfos.album} on Spotify`}>{trackInfos.album}</a></p>
                 <p className='greyFontCol'>{trackInfos.duration}</p>
                 <audio ref={refAudio} src={trackInfos.preview_url}></audio>
             </span>

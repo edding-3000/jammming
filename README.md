@@ -15,6 +15,15 @@ On the one hand, I focussed on the interface in this project (with a special foc
 - Users can listen to song teasers
 - Users can export their custom playlist to their personal Spotify account
 
+**Additional features:** 
+
+The programme checks whether there is already a playlist with the same name and which songs are in it. If necessary, only the songs that are new are added to the playlist. 
+
+**Future feature:** 
+
+- Before the process described above is carried out, the user is asked via a dialogue box whether they would like to add the songs to the existing playlist.
+- Hide navigation on scroll-down and show it on scroll-up
+
 ## How to use
 
 If you would like to take a look at the project, you can download it here. 

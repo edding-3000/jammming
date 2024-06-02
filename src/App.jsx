@@ -48,6 +48,7 @@ function App() {
       for (const item of result) {
         searchResult.push({
           "album": item.album.name,
+          "albumLink": item.album.external_urls.spotify,
           "release_date": item.album.release_date,
           "image": item.album.images[1].url,
           "artists": item.artists.map((artist) => artist.name).join(", "),
