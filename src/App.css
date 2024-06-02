@@ -139,6 +139,12 @@ header.logedIn {
   border-radius: 0 !important;
 }
 
+@media (pointer:coarse) {
+  .fullBlue::before {
+    border-radius: 20em !important;
+  }
+}
+
 main {
   display: flex;
   flex-direction: row;
@@ -163,5 +169,18 @@ main .tracksContainer {
 
   main .tracksContainer {
     max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 450px) {
+
+  header,
+  main {
+    margin: 0 .5em;
+  }
+
+  nav {
+    padding-left: .5em;
+    padding-right: .5em;
   }
 }

@@ -154,4 +154,8 @@ button:focus-visible {
   border-color: var(--successBorder);
 }
 
-@media screen and (max-width: 750px) {}
+@media screen and (max-width: 450px) {
+  :root {
+    font-size: 1em;
+  }
+}

@@ -11,3 +11,16 @@
 #trackList:has(+ #playList.extend) {
     margin-bottom: 0px !important;
 }
+
+@media screen and (max-width: 450px) {
+
+    #trackList:has(+ #playList.empty),
+    #trackList:has(+ #playList.extend.empty) {
+        margin-bottom: 100px !important;
+    }
+
+    #trackList {
+        transition: margin .5s;
+        margin-bottom: 170px;
+    }
+}

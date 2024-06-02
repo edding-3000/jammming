@@ -1,5 +1,5 @@
 #playList form {
-    margin: 0 auto;
+    margin: 13px auto;
     white-space: nowrap;
     display: flex;
 }
@@ -99,5 +99,12 @@
     #playList form input {
         max-width: 100%;
         flex: 1;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    #playList {
+        --margin: .5em;
+        bottom: 1em;
     }
 }

@@ -126,3 +126,23 @@ ul li.currentlyPlaing {
 #playList ul li.currentlyPlaing {
     outline: 0px solid transparent !important;
 }
+
+@media screen and (max-width: 450px) {
+    ul li img {
+        border-radius: calc(var(--buttonRadius) - 25px);
+        width: 60px;
+        height: 60px;
+    }
+
+    ul li {
+        gap: 10px;
+    }
+
+    ul li span {
+        gap: 1px
+    }
+
+    #playList ul li span a {
+        pointer-events: none;
+    }
+}

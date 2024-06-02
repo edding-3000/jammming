@@ -3,6 +3,8 @@ import './trackList.css';
 import Track from '../Track/Track';
 import { useAudio } from '../../hooks/AudioContext';
 
+export const targetRef = { current: null };
+
 function TrackList({ searchQuery, searchResults, playlistTracks, onTrackButtonClick }) {
     const { togglePlayPause, currentTrack, isPlaying } = useAudio();
 
@@ -13,7 +15,7 @@ function TrackList({ searchQuery, searchResults, playlistTracks, onTrackButtonCl
     }
 
     return (
-        <div id="trackList" className="tracksContainer">
+        <div id="trackList" ref={targetRef} className="tracksContainer">
             {searchQuery.length > 0 && (<h2>{resultsText}</h2>)}
             <ul>
                 {searchResults.map((searchResult, index) => (
