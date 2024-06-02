@@ -1,3 +1,18 @@
+#playList form {
+    margin: 0 auto;
+    white-space: nowrap;
+    display: flex;
+}
+
+#playList form input {
+    flex: 1;
+}
+
+#playList form button {
+    text-wrap: nowrap;
+    background-color: var(--midGrey);
+}
+
 @media screen and (max-width: 750px) {
     #playList {
         --margin: 1em;
@@ -17,6 +32,13 @@
         -webkit-box-shadow: 0px 0px 70px 0px rgba(255, 255, 255, 0.1);
         -moz-box-shadow: 0px 0px 70px 0px rgba(255, 255, 255, 0.1);
         box-shadow: 0px 0px 70px 0px rgba(255, 255, 255, 0.1);
+    }
+
+    @supports (backdrop-filter: blur()) {
+        #playList {
+            background-color: rgba(23, 26, 23, 0.8);
+            backdrop-filter: blur(30px);
+        }
     }
 
     #playList.extend {
@@ -48,6 +70,10 @@
         max-height: 300vh;
     }
 
+    #playList ul li {
+        min-width: 100%;
+    }
+
     #playList ul li:hover {
         background-color: transparent;
     }
@@ -59,14 +85,19 @@
     #playList ul li,
     #playList form {
         scroll-snap-align: center;
-        min-width: 100%;
     }
 
     #playList ul:has(li) {
         margin-top: 10px;
     }
 
+    #playList form {
+        margin: 0 1em;
+        max-width: 100%;
+    }
+
     #playList form input {
-        width: 100%;
+        max-width: 100%;
+        flex: 1;
     }
 }

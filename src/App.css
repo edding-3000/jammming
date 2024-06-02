@@ -147,6 +147,7 @@ main {
 
 main .tracksContainer {
   flex: 1;
+  max-width: calc(50vw - 10px - 1em);
 }
 
 @media screen and (max-width: 750px) {
@@ -158,5 +159,9 @@ main .tracksContainer {
   main {
     flex-direction: column;
     position: relative;
+  }
+
+  main .tracksContainer {
+    max-width: 100%;
   }
 }

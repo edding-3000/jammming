@@ -1,13 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './playlist.css';
 import Track from '../Track/Track';
+import TitleIndex from './TitleIndex/TitleIndex';
 
-import { usersSpotifyData, getUsersPlaylists, addPlaylistToSpotify, tracksAlreadyInPlaylist, addTracksToPlaylist } from '../../spotify/addPlaylist';
+import { useAudio } from '../../hooks/AudioContext';
 
-function Playlist({ playlistTracks, onTrackButtonClick }) {
+import Spotify from '../../spotify/spotifyObject';
+
+function Playlist({ playlistTracks, onTrackButtonClick, children }) {
+    const { togglePlayPause, currentTrack, isPlaying } = useAudio();
+
     const [playlistName, setPlaylistName] = useState("");
     const [playlistUris, setPlaylistUris] = useState([]);
     const [extendPlaylist, setExtendPlaylist] = useState(false);
+
+    const scrollContainerRef = useRef(null);
 
     // Get playlistname from localstorage when app is loaded
     useEffect(() => {
@@ -30,38 +37,20 @@ function Playlist({ playlistTracks, onTrackButtonClick }) {
         event.preventDefault();
         console.log(playlistUris);
         if (playlistUris.length <= 0) {
-            console.log("Keine tracks in der Playlist.");
+            console.log("No tracks in playlist.");
             return;
         }
-
-        if (!localStorage.getItem('access_token')) {
-            console.log("Keine access_token.");
+        if (!playlistName) {
+            console.log("Please enter a playlistname.");
             return;
         }
-
-        try {
-            const userID = await usersSpotifyData("userID");
-            let playlistID = await getUsersPlaylists(playlistName, userID);
-            let tracks = playlistUris;
-            if (playlistID.length === 0) {
-                // If no playlist with same name was found, create new playlist
-                playlistID = await addPlaylistToSpotify(playlistName, userID);
-            } else {
-                // Otherwise check if tracks are already in existing playlist
-                playlistID = playlistID[0].id;
-                tracks = await tracksAlreadyInPlaylist(playlistUris, playlistID);
-            }
-            await addTracksToPlaylist(tracks, playlistID);
-            console.log('Playlist erfolgreich erstellt und Tracks hinzugefügt');
-            setPlaylistUris([]);
-        } catch (error) {
-            console.error('Fehler beim Erstellen der Playlist oder Hinzufügen der Tracks:', error);
-        }
+        await Spotify.createPlaylist(playlistUris, playlistName)
+        setPlaylistUris([]);
     }
 
     const actionExtendPlaylist = ({ target }) => {
         const el = target.tagName.toLowerCase();
-        if (el === 'ul' || el === 'button' || el === 'input' || el === 'img') { return; }
+        if (el === 'ul' || el === 'button' || el === 'input' || el === 'img' || el === 'picture') { return; }
 
         let toggleClass;
         extendPlaylist ? toggleClass = false : toggleClass = true;
@@ -73,21 +62,29 @@ function Playlist({ playlistTracks, onTrackButtonClick }) {
     return (
         <div id="playList" className={`${extendPlaylist ? "extend " : ""}tracksContainer ${playlistEmpty}`} onClick={actionExtendPlaylist}>
             <form onSubmit={addToSpotify}>
-                <input className='button' type='text' placeholder='Playlistname' name='playlistInput' id='playlistInput' value={playlistName} onChange={handleChange} />
-                <div><button type='submit'>Add to Spotify</button></div>
+                <input required className='button' type='text' placeholder='Playlistname' name='playlistInput' id='playlistInput' value={playlistName} onChange={handleChange} />
+                <div><button type='submit' disabled={playlistTracks.length === 0 ? true : false}>Add to Spotify</button></div>
             </form>
-            <ul>
+
+            {/* {children} */}
+            <TitleIndex scrollContainerRef={scrollContainerRef} playlistTracks={playlistTracks} />
+
+            <ul ref={scrollContainerRef}>
                 {playlistTracks.map((playlistTrack, index) => (
                     <Track
+                        scrollClass="scroll-item"
                         trackButtonEvent={onTrackButtonClick}
                         key={index}
                         trackInfos={playlistTrack}
                         buttonType="remove"
-                        button="-"
+
+                        togglePlayPause={togglePlayPause}
+                        currentTrack={currentTrack}
+                        isPlaying={isPlaying}
                     />
                 ))}
             </ul>
         </div>
-    )
+    );
 }
 export default Playlist;

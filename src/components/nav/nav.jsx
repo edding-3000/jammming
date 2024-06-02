@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { currentToken } from '../../spotify/spotifyAuthorization/extractAccessToken';
+import Spotify from "../../spotify/spotifyObject";
 import { millisToMinutesAndSeconds } from '../../helper/helper';
 
 import "./nav.css";
@@ -9,10 +9,10 @@ export function Nav({ login, userData, handleLogout }) {
     const [loginCountdown, setLoginCountdown] = useState("");
 
     useEffect(() => {
-        if (currentToken.timeLeft.isTimeLeft) {
+        if (Spotify.timeTillLogout()) {
             //Display timer for token expiry
             const intervalId = setInterval(() => {
-                setLoginCountdown(millisToMinutesAndSeconds(currentToken.timeLeft.time));
+                setLoginCountdown(millisToMinutesAndSeconds(Spotify.timeTillLogout()));
             }, 1000);
 
             return () => {

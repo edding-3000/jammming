@@ -11,26 +11,3 @@ export const generateRandomString = (length) => {
     const values = crypto.getRandomValues(new Uint8Array(length));
     return values.reduce((acc, x) => acc + possible[x % possible.length], "");
 }
-
-// Authorization request
-const requestAccessToken = async () => {
-    const client_id = import.meta.env.VITE_client_id;
-    const redirect_uri = 'http://localhost:5173';
-
-    const stateKey = 'spotify_auth_state';
-    const state = generateRandomString(64);
-
-    localStorage.setItem(stateKey, state);
-    const scope = "playlist-read-private playlist-modify-private playlist-modify-public";
-
-    let url = 'https://accounts.spotify.com/authorize';
-    url += '?response_type=token';
-    url += '&client_id=' + encodeURIComponent(client_id);
-    url += '&scope=' + encodeURIComponent(scope);
-    url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
-    url += '&state=' + encodeURIComponent(state);
-
-    window.location = url;
-}
-
-export default requestAccessToken;

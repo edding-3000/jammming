@@ -28,6 +28,35 @@ ul li img {
     border-radius: calc(var(--buttonRadius) - 15px);
     width: 90px;
     height: 90px;
+    cursor: pointer;
+}
+
+ul li picture {
+    cursor: pointer;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+}
+
+ul li picture::after {
+    content: "";
+    opacity: .6;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+}
+
+ul li picture:hover::after {
+    background: url("../../assets/icons/play_arrow_48dp_FILL1_wght400_GRAD0_opsz48.svg") no-repeat center center;
+}
+
+ul li.currentlyPlaing picture::after,
+ul li.currentlyPlaing picture:hover::after {
+    background: url("../../assets/icons/pause_48dp_FILL1_wght400_GRAD0_opsz48.svg") no-repeat center center !important;
 }
 
 ul li span {
@@ -83,4 +112,12 @@ ul li button {
 
 .isAdded {
     background-color: var(--blue) !important;
+}
+
+ul li.currentlyPlaing {
+    outline: 2px solid var(--blue);
+}
+
+#playList ul li.currentlyPlaing {
+    outline: 0px solid transparent !important;
 }

@@ -9,20 +9,22 @@ import Playlist from './components/Playlist/Playlist';
 import TrackList from './components/TrackList/TrackList';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import { Nav } from './components/nav/nav';
+import TitleIndex from './components/Playlist/TitleIndex/TitleIndex';
+
 import './App.css'
 
 // Spotify files
-import requestAccessToken from './spotify/spotifyAuthorization/requestAccessToken';
-import { currentToken, extractAccessToken, getUserData } from './spotify/spotifyAuthorization/extractAccessToken';
-import { spotifySearchRequest } from './spotify/spotifySearchRequest';
+import Spotify from './spotify/spotifyObject';
 
 // Helper
 import { millisToMinutesAndSeconds } from './helper/helper';
+import { AudioProvider } from './hooks/AudioContext';
 
 // Assets
 import arrowRight from './assets/icons/arrow_forward_48dp_FILL0_wght400_GRAD0_opsz48.svg';
 
 function App() {
+
   const [inputVal, setInputVal] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -41,7 +43,7 @@ function App() {
     event.preventDefault();
     if (inputVal.length > 0) {
       // Get search results 
-      let result = await spotifySearchRequest(inputVal);
+      let result = await Spotify.searchRequest(inputVal);
       let searchResult = [];
 
       for (const item of result) {
@@ -95,16 +97,12 @@ function App() {
   // Connect to Spotify via Implicit Grant Flow (Not recomended because of security flaws)
   const connectToSpotify = async () => {
     setConnectClicked(true);
-    setTimeout(async () => { await requestAccessToken(); }, 200)
-    // await requestAccessToken();
+    setTimeout(async () => { Spotify.requestAccessToken(); }, 200);
   }
 
   useEffect(() => {
     const fetch = async () => {
-      let access_token = null;
-      if (!currentToken.access_token) access_token = await extractAccessToken();
-      else access_token = currentToken.access_token;
-      await getUserData(access_token).then(
+      await Spotify.login().then(
         (data) => {
           setLoginError("");
           if (data) {
@@ -117,20 +115,23 @@ function App() {
         console.log(error);
         setLoginError(error);
         setUserData({});
-        setLogin(false)
-      })
+        setLogin(false);
+      });
     }
 
-    if (window.location.hash.includes('access_token') || (!login && currentToken.access_token)) {
+    if (window.location.hash.includes('access_token') || (!login && localStorage.getItem("access_token"))) { //Spotify.accessToken)) {
       fetch();
     }
     setConnectClicked(false);
+
+    if (Spotify.timeTillLogout() === 0) {
+      handleLogout();
+    }
   }, []);
 
   useEffect(() => {
-    if (currentToken.timeLeft.isTimeLeft) {
-      // Handle Logout after Token expires
-      const handleExpiration = setTimeout(() => { handleLogout() }, currentToken.timeLeft.time)
+    if (Spotify.timeTillLogout() > 0) {
+      const handleExpiration = setTimeout(() => { handleLogout() }, Spotify.timeTillLogout())
 
       return () => {
         clearTimeout(handleExpiration);
@@ -140,21 +141,17 @@ function App() {
 
   function handleLogout() {
     console.log("Bei Spotify abgemeldet");
-    localStorage.clear();
+    Spotify.logout();
     setUserData({});
     setLogin(false);
     setConnectClicked(false);
-    // window.location.href = "http://localhost:5173";
   }
 
   useEffect(() => {
     console.log(playlistTracks);
   }, [playlistTracks]);
 
-  useEffect(() => {
-    console.log(searchResults);
-  }, [searchResults]);
-
+  const showLoginError = loginError ? <p className="message error show">{loginError.message}</p> : "";
   return (
     <>
       {!login ? (
@@ -164,7 +161,7 @@ function App() {
             <div className='hero'>
               <h2>Music your way – <br />Create your Spotify playlists online! 🎧</h2>
               <p className='intro'>After logging in, your session is valid for one hour. Afterwards you can log in again!</p>
-              {`${loginError ? <p className="message error show">{loginError}</p> : ""}`}
+              {showLoginError}
             </div>
           </header >
           <div className='mainButtonWrap'>
@@ -179,9 +176,21 @@ function App() {
             <SearchBar className='hero' handleSubmit={handleSubmit} inputVal={inputVal} handleChange={handleChange} />
           </header>
           <main>
-            <TrackList searchQuery={searchQuery} searchResults={searchResults} playlistTracks={playlistTracks} onTrackButtonClick={handleTrackButtonClick} />
+            <AudioProvider>
+              <TrackList
+                searchQuery={searchQuery}
+                searchResults={searchResults}
+                playlistTracks={playlistTracks}
+                onTrackButtonClick={handleTrackButtonClick}
+              />
 
-            <Playlist playlistTracks={playlistTracks} onTrackButtonClick={handleTrackButtonClick} />
+              <Playlist
+                playlistTracks={playlistTracks}
+                onTrackButtonClick={handleTrackButtonClick}
+              >
+                {/* <TitleIndex scrollContainerRef={scrollContainerRef} playlistTracks={playlistTracks} /> */}
+              </Playlist>
+            </AudioProvider>
           </main>
         </>)
       }

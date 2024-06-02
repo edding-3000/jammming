@@ -1,0 +1,13 @@
+#trackList {
+    transition: margin .5s;
+    margin-bottom: 210px;
+}
+
+#trackList:has(+ #playList.empty),
+#trackList:has(+ #playList.extend.empty) {
+    margin-bottom: 100px !important;
+}
+
+#trackList:has(+ #playList.extend) {
+    margin-bottom: 0px !important;
+}

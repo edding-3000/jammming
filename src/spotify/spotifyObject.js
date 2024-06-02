@@ -23,6 +23,7 @@ const Spotify = {
         if (!accessToken) return "No AccessToken send.";
         this._accessToken = accessToken;
         localStorage.setItem("access_token", accessToken);
+        localStorage.removeItem("accessTokenRequested");
     },
 
     set expiresIn(expiresIn) {
@@ -36,7 +37,7 @@ const Spotify = {
 
         const time = Date.now();
         localStorage.setItem("setTime", time);
-        this.setTime(time);
+        this.setTime = time;
     },
 
     set setTime(time) {
@@ -62,8 +63,10 @@ const Spotify = {
             this._accessToken = storedAccessToken;
             return storedAccessToken;
         }
-        if (!this._accessTokenRequested) {
-            this._accessTokenRequested = true;
+
+        if (!localStorage.getItem("accessTokenRequested") || !localStorage.getItem('spotify_auth_state')) {
+            console.log("??");
+            localStorage.setItem("accessTokenRequested", true);
             this.requestAccessToken();
         }
         return null;
@@ -89,6 +92,7 @@ const Spotify = {
     },
 
     timeTillLogout() {
+        if (!this.setTime || !this.expiresIn) { return; }
         const setTime = this.setTime;
         let timeLeft = this.expiresIn * 1000 - (Date.now() - setTime);
         timeLeft = timeLeft >= 0 ? timeLeft : 0;
@@ -101,15 +105,14 @@ const Spotify = {
         if (this.extractAccessToken())
             return await this.getUserData();
         else
-            return false;
+            throw new Error("Login failed.");
     },
 
     logout() {
-        console.log("Bei Spotify abgemeldet");
         localStorage.clear();
         this._userID = null;
         this._accessToken = null;
-        this._accessTokenRequested = false;
+        localStorage.removeItem("accessTokenRequested");
         this._expiresIn = null;
         this._setTime = null;
         if (this._timeout) clearTimeout(this._timeout);
@@ -133,17 +136,23 @@ const Spotify = {
 
         let url = 'https://accounts.spotify.com/authorize';
         url += '?response_type=token';
-        url += '&client_id=' + encodeURIComponent(this.clientId);
+        url += '&client_id=' + encodeURIComponent(this._clientId);
         url += '&scope=' + encodeURIComponent(scope);
-        url += '&redirect_uri=' + encodeURIComponent(this.redirectUri);
+        url += '&redirect_uri=' + encodeURIComponent(this._redirectUri);
         url += '&state=' + encodeURIComponent(state);
 
         window.location = url;
     },
 
     extractAccessToken() {
-        if (this.accessToken) {
-            return this.accessToken;
+        if (this._accessToken) {
+            return this._accessToken;
+        } else if (!this._accessToken) {
+            const storedAccessToken = localStorage.getItem("access_token");
+            if (storedAccessToken) {
+                this.accessToken = storedAccessToken;
+                return storedAccessToken;
+            }
         }
 
         console.log("Extracting Accesstoken from URL.");
@@ -156,13 +165,16 @@ const Spotify = {
             storedState = localStorage.getItem('spotify_auth_state');
 
         console.log("params", params);
-        console.log("access_token", this.accessToken);
+        console.log("access_token", access_token);
         console.log("state", state);
         console.log("storedState", storedState);
 
+        localStorage.removeItem('spotify_auth_state');
+        clearURL();
+
         if (access_token && (state == null || state !== storedState)) {
-            console.log('There was an error during the authentication: No state key or missmatching state keys.');
-            return;
+            // localStorage.removeItem('spotify_auth_state');
+            throw new Error('There was an error during the authentication: No state key or missmatching state keys.');
         }
 
         if (!access_token) {
@@ -170,9 +182,6 @@ const Spotify = {
             console.log("No access_token");
             return;
         }
-
-        localStorage.removeItem('spotify_auth_state');
-        clearURL();
 
         this.accessToken = access_token;
         this.expiresIn = expires_in;
@@ -185,12 +194,7 @@ const Spotify = {
     async getUserData() {
         console.log("Fetching Userdata from Spotify.");
 
-        const response = await this.makeGet("me", this.accessToken);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status} Message: ${response.message}`);
-        }
-
-        const userData = await response.json();
+        const userData = await this.makeGet("me", this.accessToken);
 
         console.log("Bei Spotify angemeldet");
         return userData;
@@ -262,7 +266,7 @@ const Spotify = {
         const playlists = await this.makeGet(endpoint, this.accessToken);
 
         if (playlists && playlists.total > 0) {
-            return foundPlaylists;
+            return playlists;
         } else return;
     },
 
@@ -321,7 +325,7 @@ const Spotify = {
                 !playlistData.items.some(item => item.track.uri === track)
             );
 
-            uniqueTracks.length > 0 ? console.log(`Found ${tracks.length - uniqueTracks.length} that is/are already in the playlist.`) : console.log("All Tracks added.");
+            uniqueTracks.length > 0 ? console.log(`Found ${tracks.length - uniqueTracks.length} songs that is/are already in the playlist.`) : console.log("All Tracks added.");
             return uniqueTracks;
         }
     },
@@ -362,7 +366,7 @@ const Spotify = {
             console.log('Playlist erfolgreich erstellt und Tracks hinzugefügt');
             return true;
         } catch (e) {
-            console.error('Fehler beim Erstellen der Playlist oder Hinzufügen der Tracks:', error);
+            console.error('Fehler beim Erstellen der Playlist oder Hinzufügen der Tracks:', e);
             return false;
         }
     },

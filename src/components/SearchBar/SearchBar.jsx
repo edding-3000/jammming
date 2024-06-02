@@ -8,7 +8,7 @@ export function SearchBar({
 }) {
     return (
         <form id="searchSongsForm" onSubmit={handleSubmit}>
-            <input className='button' type='text' placeholder='Find new songs' name='searchSongs' id='searchSongs' value={inputVal} onChange={handleChange} />
+            <input required className='button' type='text' placeholder='Find new songs' name='searchSongs' id='searchSongs' value={inputVal} onChange={handleChange} />
             <div><button className="mainButton" type='submit'>Search</button></div>
         </form>
     );

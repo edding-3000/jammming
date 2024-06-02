@@ -125,12 +125,12 @@ button:focus-visible {
 }
 
 .hide {
-  display: none;
+  display: none !important;
   visibility: hidden;
 }
 
 .show {
-  display: inline-block;
+  display: inline-block !important;
   visibility: visible;
 }
 
@@ -138,6 +138,8 @@ button:focus-visible {
   padding: 0.6em 1.2em;
   border: var(--borderWidth) solid;
   border-radius: var(--buttonRadius);
+  max-width: 700px;
+  margin: 0 auto;
 }
 
 .message.error {

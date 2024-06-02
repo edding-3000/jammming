@@ -1,0 +1,44 @@
+#playList .scrollNumber,
+#playList.extend .scrollNumber {
+    display: none;
+}
+
+@media screen and (max-width: 750px) {
+    #playList .scrollNumber {
+        display: block;
+        position: absolute;
+        margin: 0;
+        font-size: small;
+        text-align: left;
+        color: var(--lightGrey);
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 1em;
+        z-index: 99;
+        transition: all .25s;
+    }
+
+    #playList .scrollNumber.show {
+        opacity: 1;
+        animation-name: show;
+        animation-duration: 1.5s;
+    }
+
+    @keyframes show {
+        0% {
+            opacity: 0;
+        }
+
+        10% {
+            opacity: 1;
+        }
+
+        90% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+        }
+    }
+}
