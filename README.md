@@ -27,7 +27,7 @@ The programme checks whether there is already a playlist with the same name and 
 ## How to use
 
 If you would like to take a look at the project, you can download it here. 
-In order for the project to run, you must insert your own [Spotify client ID](https://developer.spotify.com/documentation/web-api/tutorials/getting-started#create-an-app) in the file "Spotify > spotifyObject.js". Here is how you do it: [Spotify - Create an app](https://developer.spotify.com/documentation/web-api/tutorials/getting-started#create-an-app)
+In order for the project to run, you must insert your own [Spotify client ID](https://developer.spotify.com/documentation/web-api/tutorials/getting-started#create-an-app) in the file "src > Spotify > spotifyObject.js". Here is how you do it: [Spotify - Create an app](https://developer.spotify.com/documentation/web-api/tutorials/getting-started#create-an-app)
 
 ## Build with
 
