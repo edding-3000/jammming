@@ -30,7 +30,7 @@ This Project is build with React and Vite. It uses the Spotify ["Implicit Grant 
 ## Licenses 
 
 - Interfacedesign: [Creative Commons Attribution Share Alike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/)
--Software: MIT License - Copyright (c) 2024 Sebastian Hauser
+- Software: MIT License - Copyright (c) 2024 Sebastian Hauser
 
 ## Infos
 
