@@ -2,6 +2,8 @@
 
 **First React project** :partying_face:
 
+Visit [Jammmin](https://jammmin-x-spotify.netlify.app/)
+
 Jammmin is a website that allows users to search the Spotify library, create a custom playlist, then save it to their Spotify account.
 
 This project is the first result of a Codecademy Full-Stack course. Only the basic structure for the project was given, but not the code or the design itself. 
@@ -31,7 +33,9 @@ In order for the project to run, you must insert your own [Spotify client ID](ht
 
 ## Build with
 
-This Project is build with React and Vite. It uses the Spotify ["Implicit Grant Flow"](https://developer.spotify.com/documentation/web-api/tutorials/implicit-flow) api. 
+This Project is build with React and Vite. It is currently published via Netlify.
+
+Jammmin uses the Spotify ["Implicit Grant Flow"](https://developer.spotify.com/documentation/web-api/tutorials/implicit-flow) api. 
 
 >[!WARNING]
 > This project uses Spotifys "Implicit Grant Flow". The implicit grant flow has some significant security flaws, so Spotify strongly advise against using this flow. If you need to implement authorization where storing your client secret is not possible, use [Authorization code with PKCE](https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow) instead.
