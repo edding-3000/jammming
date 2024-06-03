@@ -40,6 +40,11 @@ Jammmin uses the Spotify ["Implicit Grant Flow"](https://developer.spotify.com/d
 >[!WARNING]
 > This project uses Spotifys "Implicit Grant Flow". The implicit grant flow has some significant security flaws, so Spotify strongly advise against using this flow. If you need to implement authorization where storing your client secret is not possible, use [Authorization code with PKCE](https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow) instead.
 
+## Fonts used
+
+1. Archivo – SIL Open Font License (OFL), Version 1.1. - Copyright © 2024 Omnibus-Type
+2. Clash Grotesk – Fontshare EULA - Copyright 2021 Indian Type Foundry.
+
 ## Licenses 
 
 - Interfacedesign: [Creative Commons Attribution Share Alike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/)
