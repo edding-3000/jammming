@@ -13,11 +13,20 @@
     background-color: var(--midGrey);
 }
 
+#playList {
+    visibility: hidden;
+}
+
+#trackList:has(li)~#playList {
+    visibility: visible !important;
+}
+
 @media screen and (max-width: 750px) {
     #playList {
         --margin: 1em;
         position: fixed;
         overflow: hidden;
+        visibility: visible !important;
         transition: all 0.25s;
         background-color: rgba(23, 26, 23, 0.98);
         backdrop-filter: blur(2px);
@@ -131,7 +140,8 @@
         }
     }
 
-    #playList.extend, #playList {
+    #playList.extend,
+    #playList {
         background-color: rgb(237 237 237 / 95%);
     }
 

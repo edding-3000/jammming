@@ -7,7 +7,7 @@ import { useAudio } from '../../hooks/AudioContext';
 
 import Spotify from '../../spotify/spotifyObject';
 
-function Playlist({ playlistTracks, onTrackButtonClick, children }) {
+function Playlist({ playlistTracks, onTrackButtonClick }) {
     const { togglePlayPause, currentTrack, isPlaying } = useAudio();
 
     const [playlistName, setPlaylistName] = useState("");

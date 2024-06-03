@@ -18,8 +18,8 @@ const Spotify = {
     _accessTokenRequested: false,
 
     _clientId: import.meta.env.VITE_client_id,
-    // _redirectUri: 'http://localhost:5173',
-    _redirectUri: 'https://jammmin-x-spotify.netlify.app',
+    _redirectUri: 'http://localhost:5173',
+    // _redirectUri: 'https://jammmin-x-spotify.netlify.app',
 
     set userID(userID) {
         if (!userID) return "No userID send.";
