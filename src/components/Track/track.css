@@ -146,3 +146,9 @@ ul li.currentlyPlaing {
         pointer-events: none;
     }
 }
+
+@media (prefers-color-scheme: light) {
+    ul li:hover {
+        background-color: var(--lightGrey);
+    }
+}
