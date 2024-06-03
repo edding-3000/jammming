@@ -131,7 +131,7 @@
         }
     }
 
-    #playList.extend {
+    #playList.extend, #playList {
         background-color: rgb(237 237 237 / 95%);
     }
 
