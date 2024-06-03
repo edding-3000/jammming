@@ -152,3 +152,9 @@ ul li.currentlyPlaing {
         background-color: var(--lightGrey);
     }
 }
+
+@media (pointer:coarse) {
+    ul li:hover {
+        background-color: transparent;
+    }
+}
